@@ -3,6 +3,7 @@ const cm = {
   context: undefined,
   canvasWidth: 0,
   canvasHeight: 0,
+  playedFrame: 0, // 반복 실행된 횟수
   colors: [
     '222, 35, 18', // red
     '238, 150, 63', // orange
@@ -92,6 +93,11 @@ const cm = {
 
       light.draw();
       cm.context.restore();
+    }
+
+    cm.playedFrame++; // 무한정 늘어나는 값
+    if (cm.playedFrame > 1000000) {
+      cm.playedFrame = 0;
     }
 
     requestAnimationFrame(draw); 

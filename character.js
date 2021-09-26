@@ -33,12 +33,15 @@ class Character {
   }
 
   draw() {
-    if (this.frame < this.endFrame) {
-      this.frame++;
-    } else {
-      this.frame = this.startFrame;
+    // 초 당 3번만 갱신
+    if (cm.playedFrame % 20 === 0) {
+      if (this.frame < this.endFrame) {
+        this.frame++;
+      } else {
+        this.frame = this.startFrame;
+      }
     }
-
+   
     cm.context.drawImage(
       this.image,
       (this.frame * 256), 0, 256, 256,

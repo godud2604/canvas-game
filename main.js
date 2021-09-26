@@ -19,6 +19,10 @@ const cm = {
     '220, 220, 255', // blue
     '239, 173, 255', // purple
   ],
+  charactersSrc: {
+    somun: 'images/sprite-somun.png',
+    ji: 'images/sprite-ji.png',
+  }
 };
 
 (function () {
@@ -28,6 +32,7 @@ const cm = {
   const dpr = 1;
   const mouse = { x: 0, y: 0 };
   const lights = [];
+  const characters = [];
   let indexOfLight = 0;
 
   function setSize() {
@@ -39,8 +44,28 @@ const cm = {
     if (dpr > 1) cm.context.scale(dpr, dpr);
   }
 
+  function setCharacters() {
+    const somun = new Character(
+      cm.charactersSrc.somun,
+      'underAttack',
+      (cm.canvasWidth * 0.5) - 256 + 64,
+      (cm.canvasHeight * 0.5) - 64,
+    );
+
+    const ji = new Character(
+      cm.charactersSrc.ji,
+      'attack',
+      (cm.canvasWidth * 0.5) - 64,
+      (cm.canvasHeight * 0.5) - 64,
+    );
+
+    characters.push(somun);
+    characters.push(ji);
+  }
+
   function setup() {
     setSize();
+    setCharacters();
     draw();
   }
 
@@ -49,7 +74,13 @@ const cm = {
     cm.context.clearRect(0, 0, cm.canvasWidth, cm.canvasHeight);
 
     let light;
+    let character;
     let scaleRatio;
+
+    for (let i = 0; i < characters.length; i++) {
+      character = characters[i];
+      character.draw();
+    }
 
     for (let i = 0; i < lights.length; i++) {
       light = lights[i];

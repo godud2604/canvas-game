@@ -114,6 +114,12 @@ const cm = {
     lights.push(light);
 
     indexOfLight++;
+
+    // 🔪 소문이가 지청신을 공격
+    if(indexOfLight >= cm.colors.length) {
+      characters[0].updateAction('attack');
+      characters[1].updateAction('underAttack');
+    }
   });
 
   window.addEventListener('resize', setSize);

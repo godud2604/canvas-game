@@ -48,8 +48,19 @@ const cm = {
   function draw() {
     cm.context.clearRect(0, 0, cm.canvasWidth, cm.canvasHeight);
 
+    let light;
+    let scaleRatio;
+
     for (let i = 0; i < lights.length; i++) {
-      lights[i].draw();
+      light = lights[i];
+      scaleRatio = light.y / cm.canvasHeight + 1; // 비율 , y위치로 판단
+      cm.context.save();
+      cm.context.translate(light.x, light.y);
+      cm.context.scale(scaleRatio, scaleRatio);
+      cm.context.translate(-light.x, -light.y);
+
+      light.draw();
+      cm.context.restore();
     }
 
     requestAnimationFrame(draw); 

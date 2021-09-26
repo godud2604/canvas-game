@@ -34,6 +34,7 @@ const cm = {
   const mouse = { x: 0, y: 0 };
   const lights = [];
   const characters = [];
+  const allItems = [];
   let indexOfLight = 0;
 
   function setSize() {
@@ -62,6 +63,11 @@ const cm = {
 
     characters.push(somun);
     characters.push(ji);
+
+    for (let i = 0; i < characters.length; i++) {
+      allItems.push(characters[i]);
+    }
+
   }
 
   function setup() {
@@ -70,29 +76,44 @@ const cm = {
     draw();
   }
 
+  // z-index 비교
+  function setZOrder() {
+    let temp;
+    for (let i = 0; i < allItems.length; i++) {
+      for (let j = 0; j < allItems.length; j++) {
+        if (j < allItems.length - 1) {
+          if (allItems[j].yForOrder > allItems[j+1].yForOrder) {
+            temp = allItems[j];
+            allItems[j] = allItems[j+1];
+            allItems[j+1] = temp;
+          }
+        }
+      }
+    }
+  }
+
 
   function draw() {
     cm.context.clearRect(0, 0, cm.canvasWidth, cm.canvasHeight);
-
-    let light;
-    let character;
+    
+    let item;
     let scaleRatio;
 
-    for (let i = 0; i < characters.length; i++) {
-      character = characters[i];
-      character.draw();
-    }
+    for (let i = 0; i < allItems.length; i++) {
+      item = allItems[i];
+      if (item instanceof Character) {
+        item.draw();
 
-    for (let i = 0; i < lights.length; i++) {
-      light = lights[i];
-      scaleRatio = light.y / cm.canvasHeight + 1; // 비율 , y위치로 판단
-      cm.context.save();
-      cm.context.translate(light.x, light.y);
-      cm.context.scale(scaleRatio, scaleRatio);
-      cm.context.translate(-light.x, -light.y);
-
-      light.draw();
-      cm.context.restore();
+      } else {
+        scaleRatio = item.y / cm.canvasHeight + 1; // 비율 , y위치로 판단
+        cm.context.save();
+        cm.context.translate(item.x, item.y);
+        cm.context.scale(scaleRatio, scaleRatio);
+        cm.context.translate(-item.x, -item.y);
+  
+        item.draw();
+        cm.context.restore();
+      }
     }
 
     cm.playedFrame++; // 무한정 늘어나는 값
@@ -112,6 +133,7 @@ const cm = {
 
     const light = new Light(indexOfLight, mouse.x, mouse.y);
     lights.push(light);
+    allItems.push(light);
 
     indexOfLight++;
 
@@ -120,6 +142,8 @@ const cm = {
       characters[0].updateAction('attack');
       characters[1].updateAction('underAttack');
     }
+
+    setZOrder();
   });
 
   window.addEventListener('resize', setSize);

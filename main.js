@@ -26,10 +26,12 @@ const cm = {
     draw();
   }
 
-  const particle = new Particle(100, 400);
+  const line = new Line(100, 400);
 
   function draw() {
-    particle.draw();
+    cm.context.clearRect(0, 0, cm.canvasWidth, cm.canvasHeight);
+    line.draw();
+    requestAnimationFrame(draw); // draw 반복실행 하면서 애니메이션 실행
   }
 
   window.addEventListener('resize', setSize);

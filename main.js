@@ -26,11 +26,11 @@ const cm = {
     draw();
   }
 
-  const line = new Line(100, 400);
+  const light = new Light(100, 400);
 
   function draw() {
     cm.context.clearRect(0, 0, cm.canvasWidth, cm.canvasHeight);
-    line.draw();
+    light.draw();
     requestAnimationFrame(draw); // draw 반복실행 하면서 애니메이션 실행
   }
 

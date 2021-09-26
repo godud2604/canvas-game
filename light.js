@@ -50,5 +50,29 @@ class Line {
 }
 
 class Light {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.width = 20;
+    this.height = 300;
 
+    const numberOfLines = 5;
+    this.lines = [];
+    for (let i = 0; i < numberOfLines; i++) {
+      this.lines.push(
+        new Line(
+          this.x + (Math.random() * this.width - this.width * 0.5),
+          this.y
+        )
+      );
+    }
+  }
+
+  draw() {
+    let line;
+    for (let i = 0; i < this.lines.length; i++) {
+      line = this.lines[i];
+      line.draw();
+    }
+  }
 }
